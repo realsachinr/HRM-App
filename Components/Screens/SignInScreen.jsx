@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
 
 const SignInScreen = () => {
   const [email, setEmail] = useState("");
@@ -55,7 +56,12 @@ const SignInScreen = () => {
 
     if (valid) {
       // Handle successful sign in
-      navigation.navigate("HomeScreen");
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "HomeScreen" }],
+        })
+      );
       console.log("Sign In Successful");
     }
   };

@@ -144,9 +144,10 @@ const MyAttendance = () => {
 
   function getGreeting() {
     const hours = currentTime.getHours();
-    if (hours < 12) return "Good Morning";
-    if (hours < 18) return "Good Afternoon";
-    return "Good Evening";
+    if (hours < 12) return <Text style={styles.morningText}>Good Morning</Text>;
+    if (hours < 18)
+      return <Text style={styles.morningText}>Good Afternoon</Text>;
+    return <Text style={styles.morningText}>Good Evening</Text>;
   }
 
   const refreshLocation = () => {
@@ -210,8 +211,8 @@ const MyAttendance = () => {
           <View style={styles.contentContainer}>
             <View style={styles.timeContainer}>
               <Text style={styles.greetingText}>{getGreeting()}</Text>
-              <Text style={styles.dateText}>{formatDate(currentTime)}</Text>
               <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
+              <Text style={styles.dateText}>{formatDate(currentTime)}</Text>
             </View>
             <Animated.View
               style={[
@@ -264,7 +265,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     alignItems: "center",
   },
-  // locationIcon: {},
   header: {
     flexDirection: "row",
     justifyContent: "center",
@@ -279,6 +279,14 @@ const styles = StyleSheet.create({
 
   timeContainer: {
     alignItems: "center",
+    backgroundColor: "#D9DCE1",
+    justifyContent:"center",
+    gap: 10,
+    padding: 20,
+    borderRadius: 5,
+    marginBottom: 30,
+  },
+  morningText: {
     fontFamily: "DigitalClock",
   },
   headingLocation: {
@@ -300,7 +308,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#E4EAF1",
     width: "90%",
     paddingVertical: 5,
-    fontFamily: "DigitalClock", // here is the Font
     borderRadius: 10,
     paddingHorizontal: 10,
   },
@@ -340,20 +347,19 @@ const styles = StyleSheet.create({
   greetingText: {
     fontSize: 24,
     fontWeight: "bold",
-
     color: "#2B2A61",
-    marginBottom: 10,
   },
   dateText: {
-    fontSize: 16,
-    color: "#666",
+    fontSize: 20,
+    fontFamily: "DigitalClock", // here is the Font
+    color: "#00224D",
     marginBottom: 10,
   },
   timeText: {
-    fontSize: 35,
-    fontWeight: "bold",
-    color: "#1E90FF",
-    marginBottom: 30,
+    fontSize: 52,
+
+    fontFamily: "DigitalClock", // here is the Font
+    color: "#00224D",
   },
   checkinButton: {
     backgroundColor: "#1E90FF",

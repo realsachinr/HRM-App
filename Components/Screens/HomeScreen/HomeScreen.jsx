@@ -1,4 +1,7 @@
-// Import images at the top
+import React, { useState, useCallback } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image, BackHandler, Modal } from "react-native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { AntDesign, Feather } from "@expo/vector-icons";
 import UserImage from "./User.png";
 import EmployeeAttendanceImage from "./EmployeeAttendance.png";
 import EmployeeDirectoryImage from "./EmployeeDirectory.png";
@@ -6,19 +9,39 @@ import LeaveApplicationImage from "./LeaveApplication.png";
 import DailyWorkReportImage from "./DailyWorkReport.png";
 import SalaryImage from "./Salary.png";
 import NoticeBoardImage from "./NoticeBoard.png";
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { AntDesign, Feather } from "@expo/vector-icons";
 import SideBar from "../Drawer/SideBar";
-import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isExitModalVisible, setIsExitModalVisible] = useState(false);
   const navigation = useNavigation();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const handleBackPress = () => {
+    setIsExitModalVisible(true);
+    return true;
+  };
+
+  const confirmExit = () => {
+    BackHandler.exitApp();
+  };
+
+  const cancelExit = () => {
+    setIsExitModalVisible(false);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+      };
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
@@ -120,6 +143,27 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+
+      <Modal
+        transparent={true}
+        visible={isExitModalVisible}
+        animationType="slide"
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Exit Application</Text>
+            <Text style={styles.modalMessage}>Are you sure you want to exit?</Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity onPress={confirmExit} style={styles.modalButton}>
+                <Text style={styles.modalButtonText}>Yes</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={cancelExit} style={styles.modalButton}>
+                <Text style={styles.modalButtonText}>No</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -308,6 +352,43 @@ const styles = StyleSheet.create({
   },
   arrowIcon: {
     right: 13,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalMessage: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  modalButton: {
+    padding: 10,
+    backgroundColor: "#567DF4",
+    borderRadius: 5,
+    width: "45%",
+    alignItems: "center",
+  },
+  modalButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
 

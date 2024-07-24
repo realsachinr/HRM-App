@@ -33,7 +33,11 @@ const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
+        headerStyle: {
+          backgroundColor: "#567DF4",
+          height: 100,
+        },
+        tabBarIcon: ({ color, size, focused }) => {
           let iconName;
 
           if (route.name === "Home") {
@@ -46,7 +50,25 @@ const BottomTabNavigator = () => {
             iconName = "person";
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return (
+            <View>
+              {focused && (
+                <View
+                  style={{
+                    height: 3,
+                    backgroundColor: "#567DF4",
+                    position: "absolute",
+                left:-22,
+                    bottom: 34.5,
+                    // right: 1,
+                    // justifyContent:
+                    width: "70%",
+                  }}
+                />
+              )}
+              <Ionicons name={iconName} size={size} color={color} />
+            </View>
+          );
         },
         tabBarActiveTintColor: "#567DF4",
         tabBarInactiveTintColor: "gray",
@@ -54,8 +76,8 @@ const BottomTabNavigator = () => {
         headerTitleStyle: {
           textTransform: "uppercase",
           fontSize: 18,
-          fontWeight: 700,
-          color: "#00224D",
+          fontWeight: "700",
+          color: "white",
         },
         headerTitleAlign: "center",
         headerLeft: () => {
@@ -65,7 +87,7 @@ const BottomTabNavigator = () => {
               onPress={() => navigation.goBack()}
               style={styles.headerContainer}
             >
-              <Ionicons name="arrow-back" size={30} color="#00224D" />
+              <Ionicons name="arrow-back" size={30} color="white" />
             </TouchableOpacity>
           );
         },
@@ -92,7 +114,7 @@ export default function App() {
           headerTitleStyle: {
             textTransform: "uppercase",
             fontSize: 18,
-            fontWeight: 700,
+            fontWeight: "700",
             color: "white",
           },
           headerTitleAlign: "center",
@@ -162,7 +184,6 @@ export default function App() {
           name="Leaves"
           component={Leaves}
           options={{
-            
             headerRight: () => (
               <TouchableOpacity style={styles.calendarIconContainer}>
                 <Ionicons name="calendar" size={30} color="white" />
@@ -191,5 +212,5 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     flexDirection: "row",
     justifyContent: "space-between",
-  }
+  },
 });
