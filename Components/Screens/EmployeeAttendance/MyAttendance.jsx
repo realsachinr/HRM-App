@@ -8,7 +8,6 @@ import {
   Animated,
   Alert,
 } from "react-native";
-
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import * as ImagePicker from "expo-image-picker";
@@ -102,12 +101,13 @@ const MyAttendance = () => {
       );
       return;
     }
-
+  
     const result = await ImagePicker.launchCameraAsync({
       aspect: [4, 3],
       quality: 1,
+      cameraType: ImagePicker.CameraType.front
     });
-
+  
     if (!result.cancelled) {
       setIsCheckedIn(true);
       setIsCheckedOut(false);
@@ -130,7 +130,7 @@ const MyAttendance = () => {
       hour12: true,
     });
     const [time, period] = timeString.split(" ");
-    return `${time} ${period ? period.toUpperCase() : ""}`;
+    return { time, period: period ? period.toUpperCase() : "" };
   };
 
   const formatDate = (date) => {
@@ -158,6 +158,8 @@ const MyAttendance = () => {
     return <Text>Loading...</Text>;
   }
 
+  const { time, period } = formatTime(currentTime);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -168,14 +170,6 @@ const MyAttendance = () => {
           color="#567DF4"
         />
         <Text style={styles.locationText}>{locationName}</Text>
-        {/* <TouchableOpacity onPress={refreshLocation}>
-          <Ionicons
-            name="refresh-circle"
-            size={30}
-            style={styles.refreshIcon}
-            color="#567DF4"
-          />
-        </TouchableOpacity> */}
       </View>
       <View style={styles.body}>
         <View style={styles.switchContainer}>
@@ -211,7 +205,9 @@ const MyAttendance = () => {
           <View style={styles.contentContainer}>
             <View style={styles.timeContainer}>
               <Text style={styles.greetingText}>{getGreeting()}</Text>
-              <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
+              <Text style={styles.timeText}>
+                {time} <Text style={styles.periodText}>{period}</Text>
+              </Text>
               <Text style={styles.dateText}>{formatDate(currentTime)}</Text>
             </View>
             <Animated.View
@@ -234,7 +230,9 @@ const MyAttendance = () => {
             <View style={styles.timeContainer}>
               <Text style={styles.greetingText}>{getGreeting()}</Text>
               <Text style={styles.dateText}>{formatDate(currentTime)}</Text>
-              <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
+              <Text style={styles.timeText}>
+                {time} <Text style={styles.periodText}>{period}</Text>
+              </Text>
             </View>
             <Animated.View
               style={[
@@ -280,7 +278,7 @@ const styles = StyleSheet.create({
   timeContainer: {
     alignItems: "center",
     backgroundColor: "#D9DCE1",
-    justifyContent:"center",
+    justifyContent: "center",
     gap: 10,
     padding: 20,
     borderRadius: 5,
@@ -351,15 +349,19 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 20,
-    fontFamily: "DigitalClock", // here is the Font
+    fontFamily: "DigitalClock",
     color: "#00224D",
     marginBottom: 10,
   },
   timeText: {
     fontSize: 52,
-
-    fontFamily: "DigitalClock", // here is the Font
+    fontFamily: "DigitalClock",
     color: "#00224D",
+  },
+  periodText: {
+    fontSize: 24,
+    
+    fontFamily: "DigitalClock",
   },
   checkinButton: {
     backgroundColor: "#1E90FF",

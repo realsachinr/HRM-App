@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, BackHandler, Modal } from "react-native";
+import React, { useState, useCallback, useRef } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image, BackHandler, Modal, PanResponder, Animated } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import UserImage from "./User.png";
@@ -15,6 +15,7 @@ const HomeScreen = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isExitModalVisible, setIsExitModalVisible] = useState(false);
   const navigation = useNavigation();
+  const pan = useRef(new Animated.ValueXY()).current;
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -43,8 +44,25 @@ const HomeScreen = () => {
     }, [])
   );
 
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderMove: (evt, gestureState) => {
+      if (gestureState.dx > 0 && !isSidebarOpen) {
+        pan.setValue({ x: gestureState.dx, y: 0 });
+      }
+    },
+    onPanResponderRelease: (evt, gestureState) => {
+      if (gestureState.dx > 100 && !isSidebarOpen) {
+        setIsSidebarOpen(true);
+      } else if (gestureState.dx < -100 && isSidebarOpen) {
+        setIsSidebarOpen(false);
+      }
+      pan.setValue({ x: 0, y: 0 });
+    }
+  });
+
   return (
-    <View style={styles.container}>
+    <View style={styles.container} {...panResponder.panHandlers}>
       <View style={styles.header}>
         <View style={styles.profileHeader}>
           <View style={styles.profile}>
@@ -59,6 +77,7 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+      {isSidebarOpen && <View style={styles.overlay} />}
       <SideBar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <View style={styles.content}>
         <View style={styles.row}>
@@ -208,6 +227,15 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     zIndex: 1001,
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: 1000,
   },
   content: {
     padding: 20,
