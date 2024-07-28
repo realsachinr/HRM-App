@@ -142,7 +142,7 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#567DF4",
+    backgroundColor: "#00224D",
     width: "100%",
   },
   passwordContainer: {
@@ -151,8 +151,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "#fff",
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ddd",
+
   },
   eyeIcon: {
     padding: 10,
@@ -209,10 +208,10 @@ const styles = StyleSheet.create({
   },
 
   forgotPasswordText: {
-    color: "#1e90ff",
+    color: "#00224D",
   },
   signInButton: {
-    backgroundColor: "#567DF4",
+    backgroundColor: "#00224D",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",

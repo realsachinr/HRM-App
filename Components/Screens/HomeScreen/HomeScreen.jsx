@@ -191,7 +191,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    backgroundColor: "#567DF4",
+    backgroundColor: "#00224D",
+
   },
   header: {
     flexDirection: "row",
@@ -409,7 +410,7 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     padding: 10,
-    backgroundColor: "#567DF4",
+    backgroundColor: "#00224D",
     borderRadius: 5,
     width: "45%",
     alignItems: "center",

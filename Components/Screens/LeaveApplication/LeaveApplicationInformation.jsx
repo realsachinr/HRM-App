@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView } fro
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import { ScrollView } from 'react-native-gesture-handler';
 const LeaveApplicationInformation = () => {
   const [leaveType, setLeaveType] = React.useState('');
   const [fromDate, setFromDate] = React.useState(new Date());
@@ -27,6 +27,7 @@ const LeaveApplicationInformation = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView>
       <View style={styles.formContainer}>
         <Text style={styles.label}>Leave Application Information</Text>
         
@@ -100,6 +101,7 @@ const LeaveApplicationInformation = () => {
           <Text style={styles.applyButtonText}>Apply For Leave</Text>
         </TouchableOpacity>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -120,6 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     margin: 20,
     top: 30,
+    marginBottom: 50,
     borderRadius: 10,
     padding: 20,
     shadowColor: '#000',
@@ -171,7 +174,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   applyButton: {
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#00224D',
     padding: 15,
     borderRadius: 5,
     alignItems: 'center',

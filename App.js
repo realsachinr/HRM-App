@@ -34,7 +34,7 @@ const BottomTabNavigator = () => {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerStyle: {
-          backgroundColor: "#567DF4",
+          backgroundColor: "#00224D",
           height: 100,
         },
         tabBarIcon: ({ color, size, focused }) => {
@@ -56,12 +56,10 @@ const BottomTabNavigator = () => {
                 <View
                   style={{
                     height: 3,
-                    backgroundColor: "#567DF4",
+                    backgroundColor: "#00224D",
                     position: "absolute",
-                left:-22,
+                    left: -22,
                     bottom: 34.5,
-                    // right: 1,
-                    // justifyContent:
                     width: "70%",
                   }}
                 />
@@ -70,7 +68,7 @@ const BottomTabNavigator = () => {
             </View>
           );
         },
-        tabBarActiveTintColor: "#567DF4",
+        tabBarActiveTintColor: "#00224D",
         tabBarInactiveTintColor: "gray",
         tabBarShowLabel: false,
         headerTitleStyle: {
@@ -108,6 +106,7 @@ const BottomTabNavigator = () => {
 export default function App() {
   return (
     <NavigationContainer>
+      <StatusBar style="light" backgroundColor="#00224D" />
       <Stack.Navigator
         screenOptions={{
           headerShown: true,
@@ -130,7 +129,7 @@ export default function App() {
             );
           },
           headerStyle: {
-            backgroundColor: "#567DF4",
+            backgroundColor: "#00224D",
             height: 100,
           },
           headerTintColor: "#FFFFFF",
@@ -172,7 +171,7 @@ export default function App() {
           component={MyLeaveApplication}
         />
         <Stack.Screen
-          name="Leave Application Information"
+          name="Leave Application Form"
           component={LeaveApplicationInformation}
         />
         <Stack.Screen name="Daily Work Report" component={DailyWorkReport} />

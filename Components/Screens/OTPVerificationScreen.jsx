@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,15 +7,27 @@ import {
   StyleSheet,
 } from "react-native";
 import { Button } from "react-native-paper";
-import CountDown from "react-native-countdown-component";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const OTPVerificationScreen = () => {
+const OTPVerificationScreen = ({ initialSeconds = 60 }) => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [resendDisabled, setResendDisabled] = useState(true);
   const inputRefs = useRef([]);
   const navigation = useNavigation();
+  const [seconds, setSeconds] = useState(initialSeconds);
+
+  useEffect(() => {
+    let timer;
+    if (seconds > 0) {
+      timer = setInterval(() => {
+        setSeconds((prevSeconds) => prevSeconds - 1);
+      }, 1000);
+    } else {
+      setResendDisabled(false);
+    }
+    return () => clearInterval(timer);
+  }, [seconds]);
 
   const handleOtpChange = (index, value) => {
     if (/^\d*$/.test(value)) {
@@ -25,16 +37,17 @@ const OTPVerificationScreen = () => {
 
       if (value && index < 5) {
         inputRefs.current[index + 1].focus();
-      } else {
       }
     }
   };
-  function backHandler() {
+
+  const backHandler = () => {
     navigation.goBack();
-  }
+  };
 
   const handleResend = () => {
     setResendDisabled(true);
+    setSeconds(initialSeconds);
     // Logic to resend OTP
   };
 
@@ -52,7 +65,6 @@ const OTPVerificationScreen = () => {
           </TouchableOpacity>
           <Text style={styles.title}>Mobile Number Verify</Text>
         </View>
-
         <Text style={styles.subtitle}>
           Enter the 6 digit code sent to your mobile number
         </Text>
@@ -80,19 +92,8 @@ const OTPVerificationScreen = () => {
           </Text>
         </TouchableOpacity>
         <View style={styles.otpBox}>
-          <Text style={styles.otptext}>You can request OTP after</Text>
-          <CountDown
-            until={30}
-            size={15}
-            onFinish={() => setResendDisabled(false)}
-            digitStyle={{ backgroundColor: "transparent", height: 30 }}
-            
-            digitTxtStyle={{ color: "orange" }}
-            timeToShow={["M", "S"]}
-            timeLabels={{ m: null, s: null }}
-          />
+          <Text style={styles.otptext}>You can request OTP after {seconds} seconds</Text>
         </View>
-
         <Button
           mode="contained"
           onPress={handleVerify}
@@ -110,12 +111,11 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#567DF4",
+    backgroundColor: "#00224D",
   },
   otpBox: {
     flexDirection: "row",
     alignItems: "center",
-    // marginBottom: 16,
     bottom: 17,
   },
   otptext: {
@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
     gap: 8,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-
     alignItems: "center",
     padding: 16,
     backgroundColor: "white",
@@ -181,14 +180,14 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#000",
+    borderColor: "#00224D",
     textAlign: "center",
     fontSize: 18,
     marginRight: 8,
   },
   resend: {
     fontSize: 16,
-    color: "#007BFF",
+    color: "#00224D",
     fontWeight: "bold",
     paddingLeft: 25,
     paddingRight: 25,
@@ -214,7 +213,7 @@ const styles = StyleSheet.create({
   verifyButton: {
     width: "100%",
     padding: 10,
-    backgroundColor: "#567DF4",
+    backgroundColor: "#00224D",
   },
 });
 

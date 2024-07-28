@@ -65,7 +65,7 @@ const Slider = () => {
           });
           const dotColor = scrollX.interpolate({
             inputRange,
-            outputRange: ["#d3d3d3", "#007b9f", "#d3d3d3"],
+            outputRange: ["#d3d3d3", "#00224D", "#d3d3d3"],
             extrapolate: "clamp",
           });
 
@@ -97,7 +97,7 @@ const Slider = () => {
             {index !== slides.length - 1 && ( // Conditionally render the Skip button
               <View style={styles.skipBtn}>
                 <TouchableOpacity style={styles.skipButton}  onPress={() => navigation.navigate("SignInScreen")}>
-                  <Text >Skip</Text>
+                  <Text style={{color: "white"}} >Skip</Text>
 
                 </TouchableOpacity>
               </View>
@@ -170,8 +170,9 @@ const styles = StyleSheet.create({
   },
   skipButton:{ 
     paddingVertical:11,
-    backgroundColor: "red",
+    backgroundColor: "#00224D",
     fontWeight: "bold",
+
     top: 20,
     alignItems: "center",
     justifyContent: "center",
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
     marginRight: 50,
-    backgroundColor: "#007b9f",
+    backgroundColor: "#00224D",
     padding: 21,
     borderRadius: 100,
   },

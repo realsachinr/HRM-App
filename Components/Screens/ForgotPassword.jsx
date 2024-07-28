@@ -44,7 +44,7 @@ const ForgotPassword = () => {
         <Text style={styles.subText}>
           Forgot your password? Enter your email address below and we'll send
           you a password reset link.
-          <Text style={styles.starClr}> *</Text> - required field.
+          {/* <Text style={styles.starClr}> *</Text> - required field. */}
         </Text>
       </View>
 
@@ -76,7 +76,7 @@ const ForgotPassword = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#567DF4",
+    backgroundColor: "#00224D",
     width: "100%",
   },
   starClr: {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   signInButton: {
-    backgroundColor: "#567DF4",
+    backgroundColor: "#00224D",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",

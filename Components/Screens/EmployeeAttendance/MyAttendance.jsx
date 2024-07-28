@@ -8,6 +8,7 @@ import {
   Animated,
   Alert,
 } from "react-native";
+import SwipeButton from "./SwipeButton";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import * as ImagePicker from "expo-image-picker";
@@ -22,7 +23,9 @@ const MyAttendance = () => {
   const [location, setLocation] = useState(null);
   const [locationName, setLocationName] = useState("Location not found!");
   const [errorMsg, setErrorMsg] = useState(null);
-
+  const [checkInTime, setCheckInTime] = useState(null);
+  const [checkOutTime, setCheckOutTime] = useState(null);
+  const [totalWorkingTime, setTotalWorkingTime] = useState("--:--");
   let [fontsLoaded] = useFonts({
     DigitalClock: require("./DigitalClock.ttf"),
   });
@@ -93,6 +96,11 @@ const MyAttendance = () => {
   };
 
   const handlePress = async () => {
+    if (checkInTime) {
+      Alert.alert("Check-In", "You have already checked in today.");
+      return;
+    }
+
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== "granted") {
       Alert.alert(
@@ -101,14 +109,16 @@ const MyAttendance = () => {
       );
       return;
     }
-  
+
     const result = await ImagePicker.launchCameraAsync({
       aspect: [4, 3],
       quality: 1,
-      cameraType: ImagePicker.CameraType.front
+      cameraType: ImagePicker.CameraType.front,
     });
-  
+
     if (!result.cancelled) {
+      const currentTime = new Date();
+      setCheckInTime(currentTime);
       setIsCheckedIn(true);
       setIsCheckedOut(false);
       setIsOffice(false);
@@ -117,16 +127,29 @@ const MyAttendance = () => {
   };
 
   const handleCheckOut = () => {
+    if (checkOutTime) {
+      Alert.alert("Check-Out", "You have already checked out today.");
+      return;
+    }
+
+    const currentTime = new Date();
+    setCheckOutTime(currentTime);
     setIsCheckedOut(true);
     setIsCheckedIn(false);
     setIsOffice(true);
+
+    if (checkInTime) {
+      const timeDifference = currentTime - checkInTime;
+      const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      setTotalWorkingTime(`${hours}:${minutes < 10 ? "0" : ""}${minutes}`);
+    }
   };
 
   const formatTime = (date) => {
     const timeString = date.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
-      second: "2-digit",
       hour12: true,
     });
     const [time, period] = timeString.split(" ");
@@ -145,8 +168,9 @@ const MyAttendance = () => {
   function getGreeting() {
     const hours = currentTime.getHours();
     if (hours < 12) return <Text style={styles.morningText}>Good Morning</Text>;
-    if (hours < 18)
+    if (hours < 16)
       return <Text style={styles.morningText}>Good Afternoon</Text>;
+
     return <Text style={styles.morningText}>Good Evening</Text>;
   }
 
@@ -166,90 +190,71 @@ const MyAttendance = () => {
         <Entypo
           name="location-pin"
           size={40}
-          style={styles.refreshIcon}
-          color="#567DF4"
+          color="#00224D"
         />
         <Text style={styles.locationText}>{locationName}</Text>
       </View>
       <View style={styles.body}>
-        <View style={styles.switchContainer}>
-          <Text style={styles.switchText}>Choose your Attendance mode</Text>
-          <View style={styles.switchOptions}>
-            <TouchableOpacity
-              onPress={() => setIsOffice(true)}
-              style={[
-                styles.switchOption,
-                isOffice ? styles.active : styles.inactive,
-              ]}
-              disabled={!isCheckedOut}
-            >
-              <Text style={isOffice ? styles.activeText : styles.inactiveText}>
-                Login
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setIsOffice(false)}
-              style={[
-                styles.switchOption,
-                !isOffice ? styles.active : styles.inactive,
-              ]}
-              disabled={isCheckedOut || !isCheckedIn}
-            >
-              <Text style={!isOffice ? styles.activeText : styles.inactiveText}>
-                Logout
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
         {isOffice ? (
           <View style={styles.contentContainer}>
             <View style={styles.timeContainer}>
               <Text style={styles.greetingText}>{getGreeting()}</Text>
-              <Text style={styles.timeText}>
-                {time} <Text style={styles.periodText}>{period}</Text>
-              </Text>
+              <View style={styles.ctContainer}>
+                <Text style={styles.timeText}>{time}</Text>
+                <Text style={styles.periodText}>{period}</Text>
+              </View>
               <Text style={styles.dateText}>{formatDate(currentTime)}</Text>
             </View>
-            <Animated.View
-              style={[
-                styles.buttonContainer,
-                { transform: [{ scale: animation }] },
-              ]}
-            >
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handlePress}
+            <View style={styles.styleBtn}>
+              <SwipeButton
+                checkin={"Check in"}
+                onSwipe={handlePress}
                 disabled={isCheckedIn}
-              >
-                <Text style={styles.buttonText}>Check-in</Text>
-              </TouchableOpacity>
-            </Animated.View>
+              />
+            </View>
           </View>
         ) : (
           <View style={styles.contentContainer}>
             <View style={styles.timeContainer}>
               <Text style={styles.greetingText}>{getGreeting()}</Text>
+              <View style={styles.ctContainer}>
+                <Text style={styles.timeText}>{time}</Text>
+                <Text style={styles.periodText}>{period}</Text>
+              </View>
               <Text style={styles.dateText}>{formatDate(currentTime)}</Text>
-              <Text style={styles.timeText}>
-                {time} <Text style={styles.periodText}>{period}</Text>
-              </Text>
             </View>
-            <Animated.View
-              style={[
-                styles.buttonContainer,
-                { transform: [{ scale: animation }] },
-              ]}
-            >
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleCheckOut}
+            <View style={{ flex: 1 }}>
+              <SwipeButton
+                checkin={"Check Out"}
+                onSwipe={handleCheckOut}
                 disabled={isCheckedOut}
-              >
-                <Text style={styles.buttonText}>Check-out</Text>
-              </TouchableOpacity>
-            </Animated.View>
+              />
+            </View>
           </View>
         )}
+      </View>
+      <View style={styles.bottomBar}>
+        <View style={styles.bottomBarItem}>
+          <Ionicons name="time-outline" size={24} color="#00224D" />
+          <Text style={styles.bottomBarText}>
+            {checkInTime ? formatTime(checkInTime).time : "--:--"}
+          </Text>
+          <Text>Check In</Text>
+        </View>
+        <View style={styles.bottomBarItem}>
+          <Ionicons name="time-outline" size={24} color="#00224D" />
+          <Text style={styles.bottomBarText}>
+            {checkOutTime ? formatTime(checkOutTime).time : "--:--"}
+          </Text>
+          <Text>Check Out</Text>
+        </View>
+        <View style={styles.bottomBarItem}>
+          <Ionicons name="refresh-circle-outline" size={24} color="#00224D" />
+          <Text style={styles.bottomBarText}>
+            {totalWorkingTime}
+          </Text>
+          <Text>Working Hours</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -259,6 +264,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
+  },
+  ctContainer: {
+    flexDirection: "row",
+    gap: 10,
+  },
+
+  // styleBtn: {
+  //   flex: 1,
+  //   backgroundColor: "red",
+  //   alignItems: "flex-start",
+  //   justifyContent: "flex-start",
+  // },
+  bottomBarText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  bottomBarItem: {
+    alignItems: "center",
+  },
+  bottomBar: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    backgroundColor: "#D9DCE1",
+    paddingVertical: 10,
+  },
+  statusBar: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    backgroundColor: "#D9DCE1",
+    paddingVertical: 10,
   },
   contentContainer: {
     alignItems: "center",
@@ -281,6 +320,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 10,
     padding: 20,
+    width: 350,
+    paddingHorizontal: 50,
+    bottom: 20,
     borderRadius: 5,
     marginBottom: 30,
   },
@@ -294,16 +336,37 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "white",
     margin: 30,
     gap: 30,
-    paddingVertical: 25,
     borderRadius: 20,
     paddingHorizontal: 20,
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingVertical: 20,
+    borderTopWidth: 1,
+    borderTopColor: "#e0e0e0",
+    backgroundColor: "#fff",
+  },
+  footerItem: {
+    alignItems: "center",
+  },
+  footerText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
+    marginTop: 8,
+  },
+  footerLabel: {
+    fontSize: 14,
+    color: "#999",
   },
   locationText: {
     color: "#666",
     backgroundColor: "#E4EAF1",
+    fontSize: 10.1,
+    textTransform: "uppercase",
     width: "90%",
     paddingVertical: 5,
     borderRadius: 10,
@@ -352,19 +415,21 @@ const styles = StyleSheet.create({
     fontFamily: "DigitalClock",
     color: "#00224D",
     marginBottom: 10,
+    width: "100%",
   },
   timeText: {
-    fontSize: 52,
+    fontSize: 82,
     fontFamily: "DigitalClock",
     color: "#00224D",
   },
   periodText: {
-    fontSize: 24,
-    
+    fontSize: 20,
+    top: 50,
+    color: "#00224D",
     fontFamily: "DigitalClock",
   },
   checkinButton: {
-    backgroundColor: "#1E90FF",
+    backgroundColor: "#00224D",
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 30,
@@ -388,6 +453,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+
 });
 
 export default MyAttendance;

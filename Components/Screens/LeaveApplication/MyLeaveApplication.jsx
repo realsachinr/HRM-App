@@ -22,8 +22,8 @@ const MyLeaveApplication = ({ navigation }) => {
           </View>
         )}
       />
-      <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('Leave Application Information')}>
-        <Icon name="add" size={24} color="#fff" />
+      <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('Leave Application Form')}>
+        <Icon name="add" size={30} color="#fff" />
       </TouchableOpacity>
     </View>
   );
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   type: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#00224D',
   },
   dates: {
     fontSize: 14,
@@ -72,12 +73,12 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    right: 16,
-    bottom: 16,
-    width: 56,
-    height: 56,
-    backgroundColor: '#007bff',
-    borderRadius: 28,
+    right: 40,
+    bottom: 50,
+    width: 65,
+    height: 65,
+    backgroundColor: '#00224D',
+    borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,

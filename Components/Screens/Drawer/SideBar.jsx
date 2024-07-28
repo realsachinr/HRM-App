@@ -33,10 +33,20 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
   };
 
   const handleConfirmLogout = () => {
-    // Handle the logout process here
-    navigation.navigate("SignInScreen");
+
+     // Handle the logout process here
+     navigation.reset({
+      index: 0,
+      routes: [{ name: "SignInScreen" }],
+    });
+
     console.log("Logged out");
     setIsModalVisible(false);
+    // // Handle the logout process here
+    // navigation.navigate("SignInScreen");
+
+    // console.log("Logged out");
+    // setIsModalVisible(false);
   };
 
   const handleCancelLogout = () => {
@@ -295,7 +305,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     padding: 20,
     borderBottomEndRadius: 50,
-    backgroundColor: "#567DF4",
+    backgroundColor: "#00224D",
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
   },
