@@ -19,17 +19,17 @@ const slides = [
     key: "1",
     title: "Track your work & get result",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus sit suspendisse aliquam eget lorem viverra tincidunt.",
-    image: require("./SliderPic1.jpg"),
+    image: require("./SliderPic1.png"),
   },
   {
     key: "2",
     title: "Stay organized with team",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus sit suspendisse aliquam eget lorem viverra tincidunt.",
-    image: require("./SliderPic2.jpg"), // Adjust path as per your actual image location
+    image: require("./SliderPic2.png"), // Adjust path as per your actual image location
   },
   {
     key: "3",
-    title: "Keep healthy work-life balance",
+    title: "Keep healthy work-life",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus sit suspendisse aliquam eget lorem viverra tincidunt.",
     image: require("./SliderPic3.png"), // Adjust path as per your actual image location
   },
@@ -96,9 +96,11 @@ const Slider = () => {
           <View style={styles.slide}>
             {index !== slides.length - 1 && ( // Conditionally render the Skip button
               <View style={styles.skipBtn}>
-                <TouchableOpacity style={styles.skipButton}  onPress={() => navigation.navigate("SignInScreen")}>
-                  <Text style={{color: "white"}} >Skip</Text>
-
+                <TouchableOpacity
+                  style={styles.skipButton}
+                  onPress={() => navigation.navigate("SignInScreen")}
+                >
+                  <Text style={{ color: "white" }}>Skip</Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -130,19 +132,19 @@ const Slider = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#BEE8FE",
+    backgroundColor: "#00224D",
   },
   screenContainer: {
     width,
     backgroundColor: "white",
     justifyContent: "center",
-    paddingBottom: 80,
+    paddingBottom: 50,
     paddingLeft: 30,
     paddingRight: 20,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     paddingTop: 30,
-    top: 65,
+    // top: 70,
   },
   skipBtn: {
     width,
@@ -165,11 +167,12 @@ const styles = StyleSheet.create({
   },
   slide: {
     width,
-    justifyContent: "center",
+    justifyContent: "flex-end",
+
     alignItems: "center",
   },
-  skipButton:{ 
-    paddingVertical:11,
+  skipButton: {
+    paddingVertical: 11,
     backgroundColor: "#00224D",
     fontWeight: "bold",
 
@@ -178,17 +181,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 80,
     borderRadius: 100,
-
-    
   },
   image: {
-    top: 20,
+    // top: 20,
+    bottom: 50,
+    alignContent: "center",
+    justifyContent: "center",
     width: "100%",
     height: "50%", // Adjust height as per your design
     resizeMode: "contain",
   },
   title: {
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: "bold",
   },
   text: {
@@ -210,7 +214,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     position: "absolute",
     left: 50,
-    top: 250,
+    top: 200,
   },
   dot: {
     height: 10,

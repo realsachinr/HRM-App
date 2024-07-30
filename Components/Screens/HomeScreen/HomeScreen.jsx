@@ -1,5 +1,18 @@
 import React, { useState, useCallback, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, BackHandler, Modal, PanResponder, Animated } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  BackHandler,
+  ScrollView,
+  Dimensions,
+  Modal,
+  PanResponder,
+  Animated,
+} from "react-native";
+
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import UserImage from "./User.png";
@@ -9,6 +22,7 @@ import LeaveApplicationImage from "./LeaveApplication.png";
 import DailyWorkReportImage from "./DailyWorkReport.png";
 import SalaryImage from "./Salary.png";
 import NoticeBoardImage from "./NoticeBoard.png";
+import BirthdayCard from "./BirthdayCard";
 import SideBar from "../Drawer/SideBar";
 
 const HomeScreen = () => {
@@ -22,8 +36,16 @@ const HomeScreen = () => {
   };
 
   const handleBackPress = () => {
-    setIsExitModalVisible(true);
-    return true;
+    if (isSidebarOpen) {
+      setIsSidebarOpen(false);
+      return true; // Prevent default back action
+    } else if (isExitModalVisible) {
+      setIsExitModalVisible(false);
+      return true; // Prevent default back action
+    } else {
+      setIsExitModalVisible(true);
+      return true; // Prevent default back action
+    }
   };
 
   const confirmExit = () => {
@@ -36,12 +58,12 @@ const HomeScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+      BackHandler.addEventListener("hardwareBackPress", handleBackPress);
 
       return () => {
-        BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+        BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
       };
-    }, [])
+    }, [isSidebarOpen, isExitModalVisible])
   );
 
   const panResponder = PanResponder.create({
@@ -58,9 +80,8 @@ const HomeScreen = () => {
         setIsSidebarOpen(false);
       }
       pan.setValue({ x: 0, y: 0 });
-    }
+    },
   });
-
   return (
     <View style={styles.container} {...panResponder.panHandlers}>
       <View style={styles.header}>
@@ -93,17 +114,7 @@ const HomeScreen = () => {
             </View>
             <Text style={styles.cardText}>Employee Attendance</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.card2}>
-            <View style={styles.cardIcon2}>
-              <Image
-                source={EmployeeDirectoryImage}
-                style={styles.cardIconImage}
-              />
-            </View>
-            <Text style={styles.cardText}>Employee Directory</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.row}>
+
           <TouchableOpacity
             style={styles.card3}
             onPress={() => navigation.navigate("Leave Application")}
@@ -116,20 +127,12 @@ const HomeScreen = () => {
             </View>
             <Text style={styles.cardText}>Leave Application</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.card4}
-            onPress={() => navigation.navigate("Daily Work Report")}
-          >
-            <View style={styles.cardIcon4}>
-              <Image
-                source={DailyWorkReportImage}
-                style={styles.cardIconImage}
-              />
-            </View>
-            <Text style={styles.cardText}>Daily Work Report</Text>
-          </TouchableOpacity>
         </View>
+
         <View style={styles.tabCardContainer}>
+          <View style={{ height: 240 }}>
+            <BirthdayCard />
+          </View>
           <TouchableOpacity
             style={styles.tabcard1}
             onPress={() => navigation.navigate("Salary Statement")}
@@ -171,9 +174,14 @@ const HomeScreen = () => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Exit Application</Text>
-            <Text style={styles.modalMessage}>Are you sure you want to exit?</Text>
+            <Text style={styles.modalMessage}>
+              Are you sure you want to exit?
+            </Text>
             <View style={styles.modalButtons}>
-              <TouchableOpacity onPress={confirmExit} style={styles.modalButton}>
+              <TouchableOpacity
+                onPress={confirmExit}
+                style={styles.modalButton}
+              >
                 <Text style={styles.modalButtonText}>Yes</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={cancelExit} style={styles.modalButton}>
@@ -192,7 +200,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     backgroundColor: "#00224D",
-
+  },
+  carouselContainer: {
+    flex: 1,
+    backgroundColor: "red",
   },
   header: {
     flexDirection: "row",
@@ -200,6 +211,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     paddingTop: 55,
+  },
+  card: {
+    padding: 20,
+    backgroundColor: "#fff",
+    borderRadius: 8,
   },
   profile: {
     flexDirection: "row",
@@ -241,6 +257,7 @@ const styles = StyleSheet.create({
   content: {
     padding: 20,
     top: 20,
+    // backgroundColor: "white",
     backgroundColor: "white",
     borderTopLeftRadius: 35,
     borderTopRightRadius: 35,

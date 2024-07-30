@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Slider from "./Components/Screens/SliderScreen/SliderScreen";
 import SignInScreen from "./Components/Screens/SignInScreen";
@@ -89,6 +89,7 @@ const BottomTabNavigator = () => {
             </TouchableOpacity>
           );
         },
+        
       })}
     >
       <Tab.Screen
@@ -133,6 +134,7 @@ export default function App() {
             height: 100,
           },
           headerTintColor: "#FFFFFF",
+          ...TransitionPresets.SlideFromRightIOS, // Apply the right-side animation
         }}
       >
         <Stack.Screen

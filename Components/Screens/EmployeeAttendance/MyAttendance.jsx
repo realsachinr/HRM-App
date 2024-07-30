@@ -104,7 +104,7 @@ const MyAttendance = () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== "granted") {
       Alert.alert(
-        "Permission Denied",
+        "Permiss6ion Denied",
         "Camera permission is required to check in."
       );
       return;
@@ -150,6 +150,7 @@ const MyAttendance = () => {
     const timeString = date.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
+      second: "2-digit",
       hour12: true,
     });
     const [time, period] = timeString.split(" ");
@@ -288,6 +289,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     paddingHorizontal: 20,
     marginBottom: 20,
+    marginHorizontal: 10,
+    borderRadius: 5,
     backgroundColor: "#D9DCE1",
     paddingVertical: 10,
   },
@@ -299,6 +302,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#D9DCE1",
     paddingVertical: 10,
   },
+  // styleBtn: {
+  //   backgroundColor: "red",
+  //   width: 
+  // },  
   contentContainer: {
     alignItems: "center",
   },
@@ -320,8 +327,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 10,
     padding: 20,
-    width: 350,
-    paddingHorizontal: 50,
+    width: 390,
+    // paddingHorizontal: 50,
     bottom: 20,
     borderRadius: 5,
     marginBottom: 30,
@@ -414,11 +421,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "DigitalClock",
     color: "#00224D",
+  
     marginBottom: 10,
-    width: "100%",
+
   },
   timeText: {
-    fontSize: 82,
+    fontSize: 70,
     fontFamily: "DigitalClock",
     color: "#00224D",
   },

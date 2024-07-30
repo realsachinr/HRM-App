@@ -2,16 +2,22 @@
 import React from 'react';
 import { View, Text, StyleSheet, Animated, PanResponder } from 'react-native';
 
-const SwipeButton = ({ onSwipe, checkin }) => {
+const SwipeButton = ({ onSwipe, checkin, maxSwipeDistance = 100 }) => {
   const pan = new Animated.ValueXY();
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
-    onPanResponderMove: Animated.event(
-      [null, { dx: pan.x }],
-      { useNativeDriver: false }
-    ),
+    onPanResponderMove: (e, gestureState) => {
+      // Constrain dx value to the maxSwipeDistance
+      let dx = gestureState.dx;
+      if (dx > maxSwipeDistance) {
+        dx = maxSwipeDistance;
+      } else if (dx < 0) {
+        dx = 0;
+      }
+      pan.setValue({ x: dx, y: 0 });
+    },
     onPanResponderRelease: (e, { dx }) => {
-      if (dx > 100) { // Swipe threshold
+      if (dx > maxSwipeDistance) { // Swipe threshold
         onSwipe();
         Animated.spring(pan, {
           toValue: { x: 0, y: 0 },
@@ -42,6 +48,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    // backgroundColor: "red",
+
   },
   button: {
     width: 180,
@@ -52,14 +60,15 @@ const styles = StyleSheet.create({
     elevation: 20,
     borderRadius: 60,
     borderWidth: 9,
-    
-    borderColor: "white",
+    borderColor: 'white',
   },
   buttonText: {
     color: '#fff',
     fontSize: 18,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });
 
 export default SwipeButton;
+
+

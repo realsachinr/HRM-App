@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
+
+
 const LeaveApplication = () => {
     const navigation = useNavigation();
   return (
@@ -25,6 +27,8 @@ const LeaveApplication = () => {
           <AntDesign style={styles.arrowicon2} name="right" size={20} color="gray" />
         </TouchableOpacity>
       </View>
+      
+    
     </View>
   );
 };
