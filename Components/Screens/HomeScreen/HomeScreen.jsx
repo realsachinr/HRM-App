@@ -12,7 +12,7 @@ import {
   PanResponder,
   Animated,
 } from "react-native";
-
+import YourTime from "./YourTime";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import UserImage from "./User.png";
@@ -83,7 +83,7 @@ const HomeScreen = () => {
     },
   });
   return (
-    <View style={styles.container} {...panResponder.panHandlers}>
+    <ScrollView style={styles.container} {...panResponder.panHandlers}>
       <View style={styles.header}>
         <View style={styles.profileHeader}>
           <View style={styles.profile}>
@@ -117,7 +117,7 @@ const HomeScreen = () => {
 
           <TouchableOpacity
             style={styles.card3}
-            onPress={() => navigation.navigate("Leave Application")}
+            onPress={() => navigation.navigate("TopTabNavigator")}
           >
             <View style={styles.cardIcon3}>
               <Image
@@ -164,8 +164,10 @@ const HomeScreen = () => {
             />
           </TouchableOpacity>
         </View>
-      </View>
 
+        <YourTime />
+      </View>
+      
       <Modal
         transparent={true}
         visible={isExitModalVisible}
@@ -191,7 +193,8 @@ const HomeScreen = () => {
           </View>
         </View>
       </Modal>
-    </View>
+      
+    </ScrollView>
   );
 };
 
@@ -199,6 +202,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
+    height: "100%",
     backgroundColor: "#00224D",
   },
   carouselContainer: {
@@ -267,7 +271,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 20,
-    height: "17%",
+    height: "12%",
   },
   card1: {
     width: "48%",

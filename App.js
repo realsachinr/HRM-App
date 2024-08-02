@@ -8,14 +8,17 @@ import ForgotPassword from "./Components/Screens/ForgotPassword";
 import OTPVerificationScreen from "./Components/Screens/OTPVerificationScreen";
 import HomeScreen from "./Components/Screens/HomeScreen/HomeScreen";
 import SideBar from "./Components/Screens/Drawer/SideBar";
+import ChangePassword from "./Components/Screens/Settings/ChangePassword";
+import MenuScreen from "./Components/Screens/Menu/MenuScreen";
 import EmployeeAttendance from "./Components/Screens/EmployeeAttendance/EmployeeAttendace";
 import MyAttendance from "./Components/Screens/EmployeeAttendance/MyAttendance";
 import AttendanceReport from "./Components/Screens/EmployeeAttendance/AttendanceReport";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import LeaveApplication from "./Components/Screens/LeaveApplication/LeaveApplication";
-import MyLeaveApplication from "./Components/Screens/LeaveApplication/MyLeaveApplication";
+// import MyLeaveApplication from "./Components/Screens/LeaveApplication/MyLeaveApplication";
 import LeaveApplicationInformation from "./Components/Screens/LeaveApplication/LeaveApplicationInformation";
+import Settings from "./Components/Screens/Settings/Settings";
 import EmployeeProfile from "./Components/Screens/Drawer/DrawerTabs/EmployeeProfile";
 import TermsAndServices from "./Components/Screens/Drawer/DrawerTabs/TermsAndServices";
 import PrivacyPolicy from "./Components/Screens/Drawer/DrawerTabs/PrivacyPolicy";
@@ -25,7 +28,8 @@ import Leaves from "./Components/Screens/LeaveApplication/Leaves";
 import LeaveStatus from "./Components/Screens/LeaveApplication/LeaveStatus";
 import DailyWorkReport from "./Components/Screens/DailyWorkReport/DailyWorkReport";
 import Notification from "./Components/Screens/Drawer/DrawerTabs/Notification";
-
+import ActiveSession from "./Components/Screens/Settings/ActiveSession";
+import TopTabNavigator from "./Components/Screens/LeaveApplication/TopNavigator/TopTabNavigator";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -39,15 +43,20 @@ const BottomTabNavigator = () => {
         },
         tabBarIcon: ({ color, size, focused }) => {
           let iconName;
+          let iconStyle = {};
 
           if (route.name === "Home") {
             iconName = "home";
           } else if (route.name === "My Attendance") {
             iconName = "calendar";
-          } else if (route.name === "Leave Application") {
-            iconName = "paper-plane";
+            
+          } else if (route.name === "Settings") {
+            iconName = "settings";
           } else if (route.name === "My Profile") {
             iconName = "person";
+          } else if (route.name === 'Menu') {
+            iconName = 'menu'; 
+            iconStyle = {  };
           }
 
           return (
@@ -58,13 +67,13 @@ const BottomTabNavigator = () => {
                     height: 3,
                     backgroundColor: "#00224D",
                     position: "absolute",
-                    left: -22,
+                    left: -16,
                     bottom: 34.5,
                     width: "70%",
                   }}
                 />
               )}
-              <Ionicons name={iconName} size={size} color={color} />
+              <Ionicons name={iconName} size={size} color={color} style={iconStyle}/>
             </View>
           );
         },
@@ -98,7 +107,8 @@ const BottomTabNavigator = () => {
         options={{ headerShown: false }}
       />
       <Tab.Screen name="My Attendance" component={MyAttendance} />
-      <Tab.Screen name="Leave Application" component={LeaveApplication} />
+      <Tab.Screen name="Menu" component={MenuScreen} />
+      <Tab.Screen name="Settings" component={Settings} />
       <Tab.Screen name="My Profile" component={EmployeeProfile} />
     </Tab.Navigator>
   );
@@ -158,9 +168,22 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="Change Password"
+          component={ChangePassword}
+        />
+        <Stack.Screen
+          name="Active Session"
+          component={ActiveSession}
+        />
+        <Stack.Screen
           name="HomeScreen"
           component={BottomTabNavigator} // Use BottomTabNavigator here
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TopTabNavigator"
+          component={TopTabNavigator} // Use TopTabNavigator here
+          // options={{ headerShown: false }}
         />
         <Stack.Screen name="SideBar" component={SideBar} />
         <Stack.Screen
@@ -168,9 +191,13 @@ export default function App() {
           component={EmployeeAttendance}
         />
         <Stack.Screen name="Attendance Report" component={AttendanceReport} />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="My Leave Application"
           component={MyLeaveApplication}
+        /> */}
+        <Stack.Screen
+          name="Leave Application"
+          component={LeaveApplication}
         />
         <Stack.Screen
           name="Leave Application Form"
