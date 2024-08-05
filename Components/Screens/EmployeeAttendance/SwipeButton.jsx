@@ -1,6 +1,6 @@
 // SwipeButton.js
 import React from 'react';
-import { View, Text, StyleSheet, Animated, PanResponder } from 'react-native';
+import { View, Text, StyleSheet, Animated, PanResponder, Image } from 'react-native';
 
 const SwipeButton = ({ onSwipe, checkin, maxSwipeDistance = 100 }) => {
   const pan = new Animated.ValueXY();
@@ -39,6 +39,10 @@ const SwipeButton = ({ onSwipe, checkin, maxSwipeDistance = 100 }) => {
         {...panResponder.panHandlers}
       >
         <Text style={styles.buttonText}>{checkin}</Text>
+        <Image
+        source={require('./ArrowIcon.gif')}
+        style={styles.gif}
+      />
       </Animated.View>
     </View>
   );
@@ -51,8 +55,13 @@ const styles = StyleSheet.create({
     // backgroundColor: "red",
 
   },
+  gif: {
+    width: 40,
+    height: 40,
+    resizeMode: 'contain',
+  },
   button: {
-    width: 180,
+    width: 200,
     height: 80,
     backgroundColor: '#00224D',
     justifyContent: 'center',
@@ -60,7 +69,9 @@ const styles = StyleSheet.create({
     elevation: 20,
     borderRadius: 60,
     borderWidth: 9,
+    flexDirection: "row",
     borderColor: 'white',
+    gap: 10,
   },
   buttonText: {
     color: '#fff',

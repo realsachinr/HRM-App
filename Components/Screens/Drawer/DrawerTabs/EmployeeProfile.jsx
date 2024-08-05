@@ -1,43 +1,111 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, Button, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, Button, ScrollView, TextInput } from 'react-native';
 
 const EmployeeProfile = () => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [profileData, setProfileData] = useState({
+    name: 'Wallden Vicu',
+    email: 'wallden@gmail.com',
+    phone: '+9854785625',
+    dob: '21st Feb, 2001',
+    gender: 'Male',
+    address: '775 Rolling Green Rd.',
+  });
+
+  const handleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleChange = (key, value) => {
+    setProfileData({ ...profileData, [key]: value });
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-  
       <View style={styles.profileContainer}>
         <Image
           source={{ uri: 'https://via.placeholder.com/150' }} // Replace with the actual profile image URL
           style={styles.profileImage}
         />
-        <Text style={styles.profileName}>Wallden Vicu</Text>
+        <Text style={styles.profileName}>{profileData.name}</Text>
         <View style={styles.infoContainer}>
           <Text style={styles.infoTitle}>Name</Text>
-          <Text style={styles.infoValue}>Wallden Vicu</Text>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={profileData.name}
+              onChangeText={(value) => handleChange('name', value)}
+            />
+          ) : (
+            <Text style={styles.infoValue}>{profileData.name}</Text>
+          )}
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.infoTitle}>Email</Text>
-          <Text style={styles.infoValue}>wallden@gmail.com</Text>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={profileData.email}
+              onChangeText={(value) => handleChange('email', value)}
+            />
+          ) : (
+            <Text style={styles.infoValue}>{profileData.email}</Text>
+          )}
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.infoTitle}>Phone</Text>
-          <Text style={styles.infoValue}>+9854785625</Text>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={profileData.phone}
+              onChangeText={(value) => handleChange('phone', value)}
+            />
+          ) : (
+            <Text style={styles.infoValue}>{profileData.phone}</Text>
+          )}
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.infoTitle}>Date Of Birth</Text>
-          <Text style={styles.infoValue}>21st Feb, 2001</Text>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={profileData.dob}
+              onChangeText={(value) => handleChange('dob', value)}
+            />
+          ) : (
+            <Text style={styles.infoValue}>{profileData.dob}</Text>
+          )}
         </View>
-
         <View style={styles.infoContainer}>
           <Text style={styles.infoTitle}>Gender</Text>
-          <Text style={styles.infoValue}>Male</Text>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={profileData.gender}
+              onChangeText={(value) => handleChange('gender', value)}
+            />
+          ) : (
+            <Text style={styles.infoValue}>{profileData.gender}</Text>
+          )}
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.infoTitle}>Address</Text>
-          <Text style={styles.infoValue}>775 Rolling Green Rd.</Text>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={profileData.address}
+              onChangeText={(value) => handleChange('address', value)}
+            />
+          ) : (
+            <Text style={styles.infoValue}>{profileData.address}</Text>
+          )}
         </View>
         <View style={styles.editButtonContainer}>
-          <Button title="Edit Profile" color="#1E90FF" onPress={() => {}} />
+          <Button
+            title={isEditing ? 'Save Profile' : 'Edit Profile'}
+            color="#1E90FF"
+            onPress={handleEdit}
+          />
         </View>
       </View>
     </ScrollView>
@@ -48,17 +116,6 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: '#F5F5F5',
-  },
-  header: {
-    padding: 16,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1E90FF',
   },
   profileContainer: {
     alignItems: 'center',
@@ -78,7 +135,6 @@ const styles = StyleSheet.create({
   infoContainer: {
     width: '100%',
     padding: 16,
-
     backgroundColor: '#FFFFFF',
     marginBottom: 8,
     borderRadius: 8,
@@ -91,6 +147,13 @@ const styles = StyleSheet.create({
   infoValue: {
     fontSize: 16,
     color: '#555555',
+    marginTop: 4,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 4,
+    padding: 8,
     marginTop: 4,
   },
   editButtonContainer: {

@@ -224,7 +224,7 @@ const MyAttendance = () => {
               </View>
               <Text style={styles.dateText}>{formatDate(currentTime)}</Text>
             </View>
-            <View style={{ flex: 1 }}>
+            <View style={styles.styleBtn}>
               <SwipeButton
                 checkin={"Check Out"}
                 onSwipe={handleCheckOut}
@@ -240,7 +240,8 @@ const MyAttendance = () => {
           <Text style={styles.bottomBarText}>
             {checkInTime ? formatTime(checkInTime).time : "--:--"}
           </Text>
-          <Text>Check In</Text>
+          <Text>Check In
+          </Text>
         </View>
         <View style={styles.bottomBarItem}>
           <Ionicons name="time-outline" size={24} color="#00224D" />
@@ -271,12 +272,11 @@ const styles = StyleSheet.create({
     gap: 10,
   },
 
-  // styleBtn: {
-  //   flex: 1,
-  //   backgroundColor: "red",
-  //   alignItems: "flex-start",
-  //   justifyContent: "flex-start",
-  // },
+  styleBtn: {
+    flex: 1,
+    // backgroundColor: "red",
+    
+  },
   bottomBarText: {
     fontSize: 18,
     fontWeight: "bold",

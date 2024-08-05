@@ -83,7 +83,7 @@ const HomeScreen = () => {
     },
   });
   return (
-    <ScrollView style={styles.container} {...panResponder.panHandlers}>
+    <ScrollView style={styles.container} {...panResponder.panHandlers}       scrollEnabled={!isSidebarOpen}>
       <View style={styles.header}>
         <View style={styles.profileHeader}>
           <View style={styles.profile}>

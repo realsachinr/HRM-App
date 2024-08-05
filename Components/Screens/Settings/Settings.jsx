@@ -39,11 +39,17 @@ const Settings = () => {
         <Text style={styles.sectionTitle}>Main</Text>
 
         <View style={styles.section}>
-          <TouchableOpacity style={styles.item} onPress={() =>  navigation.navigate("Change Password")}>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => navigation.navigate("Change Password")}
+          >
             <Icon name="key-outline" size={20} color="#333" />
             <Text style={styles.itemText}>Change password</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Active Session")}>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => navigation.navigate("Active Session")}
+          >
             <Icon name="time-outline" size={20} color="#333" />
             <Text style={styles.itemText}>Active Session Details</Text>
           </TouchableOpacity>

@@ -330,6 +330,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     padding: 20,
+ 
   },
   menuItem: {
     flexDirection: "row",

@@ -82,50 +82,54 @@ const SignInScreen = () => {
 
       <View style={styles.mainContainer}>
         <View>
-          <Text style={styles.label}>
-            Email Address <Text style={styles.starClr}>*</Text>
-          </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="xyz@myitronline.com"
-            keyboardType="email-address"
-            value={email}
-            onChangeText={setEmail}
-          />
-          {emailError ? (
-            <Text style={styles.errorText}>{emailError}</Text>
-          ) : null}
-        </View>
-        <View>
-          <Text style={styles.label}>
-            Password <Text style={styles.starClr}>*</Text>
-          </Text>
-          <View style={styles.passwordContainer}>
+          <View>
+            <Text style={styles.label}>
+              Email Address <Text style={styles.starClr}>*</Text>
+            </Text>
             <TextInput
               style={styles.input}
-              placeholder="Password"
-              secureTextEntry={!showPassword}
-              value={password}
-              onChangeText={setPassword}
+              placeholder="xyz@myitronline.com"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
             />
-            <TouchableOpacity
-              style={styles.eyeIcon}
-              onPress={() => setShowPassword(!showPassword)}
-            >
-              <Ionicons
-                name={showPassword ? "eye-off" : "eye"}
-                size={20}
-                color="gray"
-              />
-            </TouchableOpacity>
+            {emailError ? (
+              <Text style={styles.errorText}>{emailError}</Text>
+            ) : null}
           </View>
-          {passwordError ? (
-            <Text style={styles.errorText}>{passwordError}</Text>
-          ) : null}
+          <View>
+            <Text style={styles.label}>
+              Password <Text style={styles.starClr}>*</Text>
+            </Text>
+            <View style={styles.passwordContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={setPassword}
+              />
+              <TouchableOpacity
+                style={styles.eyeIcon}
+                onPress={() => setShowPassword(!showPassword)}
+              >
+                <Ionicons
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={20}
+                  color="gray"
+                />
+              </TouchableOpacity>
+            </View>
+            {passwordError ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : null}
+          </View>
         </View>
 
         <View style={styles.optionsContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ForgotPassword")}
+          >
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
@@ -133,7 +137,6 @@ const SignInScreen = () => {
         <TouchableOpacity style={styles.signInButton} onPress={handleSignIn}>
           <Text style={styles.signInButtonText}>Sign In</Text>
         </TouchableOpacity>
-
       </View>
     </View>
   );
@@ -151,7 +154,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: "#fff",
     borderRadius: 10,
-
   },
   eyeIcon: {
     padding: 10,
@@ -205,6 +207,7 @@ const styles = StyleSheet.create({
   label: {
     marginLeft: 10,
     backgroundColor: "white",
+    color: "#00224D",
   },
 
   forgotPasswordText: {
