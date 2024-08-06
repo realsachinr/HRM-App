@@ -61,7 +61,7 @@ const Settings = () => {
             <Icon name="phone-portrait-outline" size={20} color="#333" />
             <Text style={styles.itemText}>Notifications active devices</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.item}>
+          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Send Feedback")}>
             <Icon name="chatbubble-ellipses-outline" size={20} color="#333" />
             <Text style={styles.itemText}>Send feedback</Text>
           </TouchableOpacity>

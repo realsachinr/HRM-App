@@ -17,6 +17,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import LeaveApplication from "./Components/Screens/LeaveApplication/LeaveApplication";
 // import MyLeaveApplication from "./Components/Screens/LeaveApplication/MyLeaveApplication";
+import SendFeedback from "./Components/Screens/Settings/SendFeedback";
 import LeaveApplicationInformation from "./Components/Screens/LeaveApplication/LeaveApplicationInformation";
 import Settings from "./Components/Screens/Settings/Settings";
 import EmployeeProfile from "./Components/Screens/Drawer/DrawerTabs/EmployeeProfile";
@@ -189,6 +190,10 @@ export default function App() {
         <Stack.Screen
           name="Employee Attendance"
           component={EmployeeAttendance}
+        />
+        <Stack.Screen
+          name="Send Feedback"
+          component={SendFeedback}
         />
         <Stack.Screen name="Attendance Report" component={AttendanceReport} />
         {/* <Stack.Screen

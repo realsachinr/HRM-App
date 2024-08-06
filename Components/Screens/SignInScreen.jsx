@@ -19,23 +19,27 @@ const SignInScreen = () => {
   const navigation = useNavigation();
 
   const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@(gmail\.com|rediffmail\.com|yahoo\.com|myitronline\.com)$/;
     return emailRegex.test(email);
   };
 
   const handleSignIn = () => {
     let valid = true;
 
-    // Email validation
-    if (!validateEmail(email)) {
+    if (email === "") {
+      setEmailError("Email is required.");
+      valid = false;
+    } else if (!validateEmail(email)) {
       setEmailError("Please enter a valid email address.");
       valid = false;
     } else {
       setEmailError("");
     }
 
-    // Password validation
-    if (password.length < 6) {
+    if (password === "") {
+      setPasswordError("Password is required.");
+      valid = false;
+    } else if (password.length < 6) {
       setPasswordError("Password must be at least 6 characters long.");
       valid = false;
     } else if (!/(?=.*[a-z])/.test(password)) {
@@ -66,6 +70,47 @@ const SignInScreen = () => {
     }
   };
 
+  
+  const emailChangeHandler = (text) => {
+    setEmail(text);
+  
+    if (text === "") {
+      setEmailError("Email is required.");
+      return;
+    } else if (!validateEmail(text)) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    } else {
+      setEmailError("");
+    }
+  };
+  
+  const passwordChangeHandler = (text) => {
+    setPassword(text);
+  
+    if (text === "") {
+      setPasswordError("Password is required.");
+      return;
+    } else if (text.length < 6) {
+      setPasswordError("Password must be at least 6 characters long.");
+      return;
+    } else if (!/(?=.*[a-z])/.test(text)) {
+      setPasswordError("Password must contain at least one lowercase letter.");
+      return;
+    } else if (!/(?=.*[A-Z])/.test(text)) {
+      setPasswordError("Password must contain at least one uppercase letter.");
+      return;
+    } else if (!/(?=.*\d)/.test(text)) {
+      setPasswordError("Password must contain at least one digit.");
+      return;
+    } else if (!/(?=.*[@$!%*?&])/g.test(text)) {
+      setPasswordError("Password must contain at least one special character.");
+      return;
+    } else {
+      setPasswordError("");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headContainer}>
@@ -91,7 +136,7 @@ const SignInScreen = () => {
               placeholder="xyz@myitronline.com"
               keyboardType="email-address"
               value={email}
-              onChangeText={setEmail}
+              onChangeText={emailChangeHandler}
             />
             {emailError ? (
               <Text style={styles.errorText}>{emailError}</Text>
@@ -107,7 +152,7 @@ const SignInScreen = () => {
                 placeholder="Password"
                 secureTextEntry={!showPassword}
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={passwordChangeHandler}
               />
               <TouchableOpacity
                 style={styles.eyeIcon}
