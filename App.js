@@ -31,6 +31,8 @@ import DailyWorkReport from "./Components/Screens/DailyWorkReport/DailyWorkRepor
 import Notification from "./Components/Screens/Drawer/DrawerTabs/Notification";
 import ActiveSession from "./Components/Screens/Settings/ActiveSession";
 import TopTabNavigator from "./Components/Screens/LeaveApplication/TopNavigator/TopTabNavigator";
+import NotificationSettings from "./Components/Screens/Settings/NotificationSettings";
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -175,6 +177,10 @@ export default function App() {
         <Stack.Screen
           name="Active Session"
           component={ActiveSession}
+        />
+        <Stack.Screen
+          name="Notification Settings"
+          component={NotificationSettings}
         />
         <Stack.Screen
           name="HomeScreen"

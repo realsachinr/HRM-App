@@ -33,8 +33,8 @@ const MenuScreen = () => {
       <View style={styles.profileSection}>
         <Image source={{ uri: 'https://via.placeholder.com/50' }} style={styles.profileImage} />
         <View style={styles.profileDetails}>
-          <Text style={styles.profileName}>Ms. Jyoti Pandey</Text>
-          <Text style={styles.profileEmail}>jyoti.pandey@velocis.co.in</Text>
+          <Text style={styles.profileName}>Mr. John Doe</Text>
+          <Text style={styles.profileEmail}>johndoe@gmail.com</Text>
           <Text style={styles.lastLogin}>Last Login: Jul 26 2024 6:07PM</Text>
         </View>
         <TouchableOpacity style={styles.logoutButton}>

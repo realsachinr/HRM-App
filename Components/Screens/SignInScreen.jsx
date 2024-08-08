@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  ToastAndroid 
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -67,6 +68,7 @@ const SignInScreen = () => {
         })
       );
       console.log("Sign In Successful");
+      ToastAndroid.show('Sign In Successful', ToastAndroid.SHORT);
     }
   };
 

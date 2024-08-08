@@ -36,7 +36,7 @@ const Settings = () => {
         </View>
       </View>
       <View>
-        <Text style={styles.sectionTitle}>Main</Text>
+        {/* <Text style={styles.sectionTitle}>Main</Text> */}
 
         <View style={styles.section}>
           <TouchableOpacity
@@ -53,7 +53,7 @@ const Settings = () => {
             <Icon name="time-outline" size={20} color="#333" />
             <Text style={styles.itemText}>Active Session Details</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.item}>
+          <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("Notification Settings")}>
             <Icon name="notifications-outline" size={20} color="#333" />
             <Text style={styles.itemText}>Notification Settings</Text>
           </TouchableOpacity>
@@ -67,13 +67,13 @@ const Settings = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <Text style={styles.sectionTitle}>Appearance</Text>
-      <View style={styles.section}>
+      {/* <Text style={styles.sectionTitle}>Appearance</Text> */}
+      {/* <View style={styles.section}>
         <TouchableOpacity style={styles.item}>
           <Icon name="color-palette-outline" size={20} color="#333" />
           <Text style={styles.itemText}>Customize</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </ScrollView>
   );
 };

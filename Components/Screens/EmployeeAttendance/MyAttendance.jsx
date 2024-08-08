@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   Animated,
+  Image,
   Alert,
 } from "react-native";
 import SwipeButton from "./SwipeButton";
@@ -13,6 +14,7 @@ import { Ionicons, Entypo } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
+import MessagePopup from "../../../Utility/MessagePopup";
 
 const MyAttendance = () => {
   const [isOffice, setIsOffice] = useState(true);
@@ -26,6 +28,9 @@ const MyAttendance = () => {
   const [checkInTime, setCheckInTime] = useState(null);
   const [checkOutTime, setCheckOutTime] = useState(null);
   const [totalWorkingTime, setTotalWorkingTime] = useState("--:--");
+  const [image, setImage] = useState(null);
+  const [popupVisible, setPopupVisible] = useState(false);
+
   let [fontsLoaded] = useFonts({
     DigitalClock: require("./DigitalClock.ttf"),
   });
@@ -38,22 +43,7 @@ const MyAttendance = () => {
     return () => clearInterval(timer);
   }, [fontsLoaded]);
 
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(animation, {
-          toValue: 1.1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(animation, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-  }, [animation]);
+
 
   useEffect(() => {
     fetchLocation();
@@ -66,7 +56,6 @@ const MyAttendance = () => {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
       fetchLocationName(location.coords.latitude, location.coords.longitude);
@@ -94,10 +83,14 @@ const MyAttendance = () => {
       setLocationName("An error occurred while fetching the place name.");
     }
   };
+  const hideMessage = () => {
+    setPopupVisible(false);
+  };
 
   const handlePress = async () => {
     if (checkInTime) {
-      Alert.alert("Check-In", "You have already checked in today.");
+      // Alert.alert("Check-In", "You have already checked in today.");
+      setPopupVisible(true);
       return;
     }
 
@@ -113,16 +106,16 @@ const MyAttendance = () => {
     const result = await ImagePicker.launchCameraAsync({
       aspect: [4, 3],
       quality: 1,
-      cameraType: ImagePicker.CameraType.front,
     });
 
-    if (!result.cancelled) {
+    console.log(result.assets[0].uri);
+    if (!result.canceled) {
       const currentTime = new Date();
       setCheckInTime(currentTime);
       setIsCheckedIn(true);
       setIsCheckedOut(false);
       setIsOffice(false);
-      console.log(result.uri);
+      setImage(result.assets[0].uri);
     }
   };
 
@@ -141,7 +134,9 @@ const MyAttendance = () => {
     if (checkInTime) {
       const timeDifference = currentTime - checkInTime;
       const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const minutes = Math.floor(
+        (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+      );
       setTotalWorkingTime(`${hours}:${minutes < 10 ? "0" : ""}${minutes}`);
     }
   };
@@ -188,11 +183,7 @@ const MyAttendance = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Entypo
-          name="location-pin"
-          size={40}
-          color="#00224D"
-        />
+        <Entypo name="location-pin" size={40} color="#00224D" />
         <Text style={styles.locationText}>{locationName}</Text>
       </View>
       <View style={styles.body}>
@@ -234,14 +225,16 @@ const MyAttendance = () => {
           </View>
         )}
       </View>
+      <View style={styles.imageContainer}>
+        {image && <Image source={{ uri: image }} style={styles.image} />}
+      </View>
       <View style={styles.bottomBar}>
         <View style={styles.bottomBarItem}>
           <Ionicons name="time-outline" size={24} color="#00224D" />
           <Text style={styles.bottomBarText}>
             {checkInTime ? formatTime(checkInTime).time : "--:--"}
           </Text>
-          <Text>Check In
-          </Text>
+          <Text>Check In</Text>
         </View>
         <View style={styles.bottomBarItem}>
           <Ionicons name="time-outline" size={24} color="#00224D" />
@@ -252,12 +245,15 @@ const MyAttendance = () => {
         </View>
         <View style={styles.bottomBarItem}>
           <Ionicons name="refresh-circle-outline" size={24} color="#00224D" />
-          <Text style={styles.bottomBarText}>
-            {totalWorkingTime}
-          </Text>
+          <Text style={styles.bottomBarText}>{totalWorkingTime}</Text>
           <Text>Working Hours</Text>
         </View>
       </View>
+      <MessagePopup 
+        visible={popupVisible}
+        message="You have already checked in today"
+        onClose={hideMessage}
+      />
     </SafeAreaView>
   );
 };
@@ -271,11 +267,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
   },
-
+  image: {
+    width: 100,
+    height: 100,
+    marginTop: 20,
+    borderRadius: 10,
+  },
+  imageContainer: {
+    // flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 50,
+    // backgroundColor: '#fff',
+  },
   styleBtn: {
     flex: 1,
     // backgroundColor: "red",
-    
   },
   bottomBarText: {
     fontSize: 18,
@@ -304,8 +311,8 @@ const styles = StyleSheet.create({
   },
   // styleBtn: {
   //   backgroundColor: "red",
-  //   width: 
-  // },  
+  //   width:
+  // },
   contentContainer: {
     alignItems: "center",
   },
@@ -421,9 +428,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: "DigitalClock",
     color: "#00224D",
-  
-    marginBottom: 10,
 
+    marginBottom: 10,
   },
   timeText: {
     fontSize: 70,
@@ -461,7 +467,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-
 });
 
 export default MyAttendance;
